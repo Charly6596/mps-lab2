@@ -1,7 +1,7 @@
 Teniendo en cuenta que vamos a cambiar el tipo de next y previous a DequeNode:
 
-@BeforeEach setup -> inicializa un objeto tipo DequeNode antes de los tests usando el constructor
-@AfterEach finish -> iguala el objeto a null después de todos los tests
+@BeforeEach setUp -> inicializa un objeto tipo DequeNode antes de los tests usando el constructor
+@AfterEach tearDown -> iguala el objeto a null después de todos los tests
 
 @ParameterizedTest
 probar si getItem devuelve el valor correcto -> assertEquals(argument,node.getItem)
