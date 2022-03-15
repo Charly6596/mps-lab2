@@ -1,0 +1,35 @@
+Teniendo en cuenta que vamos a cambiar el tipo de next y previous a DequeNode:
+
+@BeforeEach setup -> inicializa un objeto tipo DequeNode antes de los tests usando el constructor
+@AfterEach finish -> iguala el objeto a null después de todos los tests
+
+@ParameterizedTest
+probar si getItem devuelve el valor correcto -> assertEquals(argument,node.getItem)
+	Se le pasa como argumento al método un argumento argument de cualquier tipo
+	para compararlo con node.getItem. En el caso de que sean equivalentes, se pasa el test.
+
+@ParameterizedTest
+probar si getNext devuelve el valor correcto -> assertEquals(aux, node.getNext)
+	Se le pasan tres argumentos(arg1, arg2, arg3), haciendo de next, previous e item para 
+	crear como variable local del método un nodo aux y compararlo con node.getNext.
+	En el caso de que sean equivalentes, se pasa el test.
+
+@ParameterizedTest
+probar si getPrevious devuelve el valor correcto -> assertEquals(aux, node.getPrevious)
+	Se le pasan tres argumentos(arg1, arg2, arg3), haciendo de next, previous e item para 
+	crear como variable local del método un nodo aux y compararlo con node.getPrevious.
+	En el caso de que sean equivalentes, se pasa el test.
+
+@ParameterizedTest
+probar si isFirstNode es true siendo previous=null -> assertNull(previous)
+	En este se comprueba que si el nodo actual no tiene previo, el método isFirstNode devuelva true.
+
+@ParameterizedTest
+probar si isLastNode es true siendo next=null -> assertNull(next)
+	En este se comprueba que si el nodo actual no tiene siguiente, el método isLastNode devuelva true.
+
+@ParameterizedTest
+probar isNotATerminalNode es true siendo !isFirstNode() && !isLastNode() ->assertNotNull(previous) y assertNotNull(next)
+
+probar que el previous del 1er nodo sea null
+probar que el next del ultimo sea null
