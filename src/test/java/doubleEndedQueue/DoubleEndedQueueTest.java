@@ -62,7 +62,7 @@ interface DoubleEndedQueueTest{
     @Test
     @DisplayName("deleteLast over empty queue throws Exception")
     default void deleteLastWhenEmptyThrowsException(){
-        assertThrows(Exception.class, () -> getQueue().deleteFirst());
+        assertThrows(Exception.class, () -> getQueue().deleteLast());
     }
 
     @ParameterizedTest
