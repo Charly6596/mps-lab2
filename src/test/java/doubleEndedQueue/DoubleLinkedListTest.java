@@ -2,16 +2,13 @@ package doubleEndedQueue;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
-import org.junit.jupiter.api.Test;
 
-import static org.junit.jupiter.api.Assertions.*;
-
-class DoubleLinkedListTest {
-    DoubleLinkedList<Void> list;
+class DoubleLinkedListTest implements DoubleEndedQueueTest{
+    DoubleLinkedList<Integer> list;
 
     @BeforeEach
     void setUp() {
-        list = new DoubleLinkedList<>();
+        list = new DoubleLinkedList<Integer>();
     }
 
     @AfterEach
@@ -19,5 +16,8 @@ class DoubleLinkedListTest {
         list = null;
     }
 
-
+    @Override
+    public DoubleEndedQueue<Integer> getQueue() {
+        return list;
+    }
 }

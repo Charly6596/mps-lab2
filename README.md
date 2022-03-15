@@ -74,23 +74,27 @@ public class QueueNode<T> {
 ### Double Ended Queue
 
 - Append.
-  - append() null throws Exception.
-  - appendLeft() null throws Exception.
-  - append() appends at right.
-  - appendLeft() appends at left.
+  - append null then peekLast null.
+  - appendLeft null then peekFirst null.
+  - append item then peekLast return this item.
+  - appendLeft item then peekFirst return this item.
 - Delete.
-  - deleteFirst() over empty queue throws Exception.
-  - deleteLast() over empty queue throws Exception.
-  - deleteFirst() deletes left most node.
-  - deleteLast() deletes right most node.
+  - deleteFirst over empty queue throws Exception.
+  - deleteLast over empty queue throws Exception.
+  - deleteFirst deletes left most node.
+  - deleteLast deletes right most node.
 - Peek. 
-  - peekFirst() peeks left most node.
-  - peekLast() peeks right most node.
+  - peekFirst when null throws Exception.
+  - peekLast when null throws Exception.
+  - peekFirst peeks left most node.
+  - peekLast peeks right most node.
 - Size 
-  - append() increase size by one.
-  - appendLeft() increase size by one.
-  - deleteFirst() decrease size by one.
-  - deleteLast() decrease size by one.
+  - append increase size by one.
+  - appendLeft increase size by one.
+  - deleteFirst decrease size by one.
+  - deleteLast decrease size by one.
+  - peekFirst doesn't change size.
+  - peekLast doesn't change size.
 
 ### Queue Node 
 

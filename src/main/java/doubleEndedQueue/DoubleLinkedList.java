@@ -11,9 +11,6 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
 
     @Override
     public void append(T item) {
-        if (item == null)
-            throw new RuntimeException("Error at append. Can't append null.");
-
         if (size() == 0){
             appendWhenEmpty(item);
         }else {
@@ -27,9 +24,6 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
 
     @Override
     public void appendLeft(T item) {
-        if (item == null)
-            throw new RuntimeException("Error at append. Can't append null.");
-
         if (size() == 0){
             appendWhenEmpty(item);
         }else {
