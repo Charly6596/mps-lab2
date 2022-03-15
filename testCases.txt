@@ -1,0 +1,12 @@
+@BeforeEach setup -> inicializa un objeto tipo DequeNode
+@AfterEach finish -> iguala el objeto a null
+
+probar si getItem devuelve el valor correcto assertEquals(DequeNode(),node.getItem)
+probar si getNext devuelve el valor correcto
+probar si getPrevious devueve el valor correcto
+probar si isFirstNode es true siendo previous=null assertNull(previous)
+probar si isLastNode es true siendo next=null
+probar isNotATerminalNode assertNotNull(previous) y assertNotNull(next)
+
+probar que el previous del 1er nodo sea null
+probar que el next del ultimo sea null
