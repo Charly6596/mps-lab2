@@ -7,24 +7,24 @@ package doubleEndedQueue;
  *
  * @param <T>
  */
-public class DequeueNode<T> {
+public class DequeNode<T> {
     private T item ;
-    private DequeueNode<T> next ;
-    private DequeueNode<T> previous ;
+    private DequeNode<T> next ;
+    private DequeNode<T> previous ;
 
     public T getItem() {
         return item;
     }
 
-    public DequeueNode<T> getNext() {
+    public DequeNode<T> getNext() {
         return next;
     }
 
-    public DequeueNode<T> getPrevious() {
+    public DequeNode<T> getPrevious() {
         return previous;
     }
 
-    public DequeueNode(T item, DequeueNode<T> next, DequeueNode<T> previous) {
+    public DequeNode(T item, DequeNode<T> next, DequeNode<T> previous) {
         this.item = item ;
         this.next = next ;
         this.previous = previous ;
@@ -40,5 +40,13 @@ public class DequeueNode<T> {
 
     public boolean isNotATerminalNode() {
         return (!isFirstNode() && !isLastNode()) ;
+    }
+
+    void setNext(DequeNode<T> node){
+        this.next = next;
+    }
+
+    void setPrevious(DequeNode<T> node){
+        this.previous = node;
     }
 }

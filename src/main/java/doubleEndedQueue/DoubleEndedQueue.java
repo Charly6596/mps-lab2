@@ -2,15 +2,11 @@ package doubleEndedQueue;
 
 public interface DoubleEndedQueue<T> {
     // Basic operations
-    void append(DequeueNode<T> node) ;
-    void appendLeft(DequeueNode<T> node) ;
+    void append(T item) ;
+    void appendLeft(T item) ;
     void deleteFirst() ;
     void deleteLast() ;
-    DequeueNode<T> peekFirst() ;
-    DequeueNode<T> peekLast() ;
+    T peekFirst() ;
+    T peekLast() ;
     int size() ;
-
-    // Complex operations
-    // (Estas operaciones se incluirán más adelante para ser realizadas en la segunda
-    // sesión de laboratorio de esta práctica.)
 }
