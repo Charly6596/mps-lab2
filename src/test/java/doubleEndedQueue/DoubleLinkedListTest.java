@@ -7,7 +7,8 @@ import org.junit.jupiter.api.Test;
 import static org.junit.jupiter.api.Assertions.*;
 
 class DoubleLinkedListTest {
-    DoubleLinkedList<Integer> list;
+    DoubleLinkedList<Void> list;
+
     @BeforeEach
     void setUp() {
         list = new DoubleLinkedList<>();
@@ -17,4 +18,6 @@ class DoubleLinkedListTest {
     void tearDown() {
         list = null;
     }
+
+
 }
