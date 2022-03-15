@@ -56,13 +56,13 @@ interface DoubleEndedQueueTest{
     @Test
     @DisplayName("deleteFirst over empty queue throws Exception")
     default void deleteFirstWhenEmptyThrowsException(){
-        assertThrows(Exception.class, () -> getQueue().deleteFirst());
+        assertThrows(RuntimeException.class, () -> getQueue().deleteFirst());
     }
 
     @Test
     @DisplayName("deleteLast over empty queue throws Exception")
     default void deleteLastWhenEmptyThrowsException(){
-        assertThrows(Exception.class, () -> getQueue().deleteLast());
+        assertThrows(RuntimeException.class, () -> getQueue().deleteLast());
     }
 
     @ParameterizedTest
@@ -92,13 +92,13 @@ interface DoubleEndedQueueTest{
     @Test
     @DisplayName("peekFirst when null throws Exception")
     default void peekFirstWhenEmptyThrowsException(){
-        assertThrows(Exception.class, () -> getQueue().peekFirst());
+        assertThrows(RuntimeException.class, () -> getQueue().peekFirst());
     }
 
     @Test
     @DisplayName("peekLast when null throws Exception")
     default void peekLastWhenEmptyThrowsException(){
-        assertThrows(Exception.class, () -> getQueue().peekLast());
+        assertThrows(RuntimeException.class, () -> getQueue().peekLast());
     }
 
     @ParameterizedTest

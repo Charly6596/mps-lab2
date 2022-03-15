@@ -38,7 +38,7 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
     @Override
     public void deleteFirst() {
         if (size() == 0)
-            throw new RuntimeException("Error at delete. Can't delete from empty queue");
+            throw new RuntimeException("Error at delete. Can't delete over empty queue");
 
         if (size() == 1){
             deleteWhenOnlyOneNode();
@@ -53,7 +53,7 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
     @Override
     public void deleteLast() {
         if (size() == 0)
-            throw new RuntimeException("Error at delete. Can't delete from empty queue");
+            throw new RuntimeException("Error at delete. Can't delete over empty queue");
 
         if (size() == 1){
             deleteWhenOnlyOneNode();
@@ -67,11 +67,15 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
 
     @Override
     public T peekFirst() {
+        if (size() == 0)
+            throw new RuntimeException("Error at peek. Can't peek over empty queue");
         return first.getItem();
     }
 
     @Override
     public T peekLast() {
+        if (size() == 0)
+            throw new RuntimeException("Error at peek. Can't peek over empty queue");
         return last.getItem();
     }
 
