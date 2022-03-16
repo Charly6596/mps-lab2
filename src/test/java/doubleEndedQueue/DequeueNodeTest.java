@@ -4,8 +4,12 @@ import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.CsvSource;
+import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
+
+import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
@@ -15,7 +19,17 @@ class DequeueNodeTest {
 
     @BeforeEach
     void setUp() {
+        DequeNode<Integer> next, previous, auxNext, auxPrevious;
         node = new DequeNode<>(3, null, null);
+        auxNext = new DequeNode<>(5, null, null);
+        auxPrevious = new DequeNode<>(1, null, null);
+        next = new DequeNode<>(4, auxNext, node);
+        previous = new DequeNode<>(2, node, auxPrevious);
+
+        auxNext.setPrevious(next);
+        auxPrevious.setNext(previous);
+        node.setNext(next);
+        node.setPrevious(previous);
     }
 
     @AfterEach
@@ -23,45 +37,54 @@ class DequeueNodeTest {
         node = null;
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {0, -1, 2})
-    public void getItemCorrect(int n){
-        Integer integer = Integer.valueOf(n);
+    @Test
+    public void getItemCorrect(){
+        Integer integer = Integer.valueOf(3);
         assertEquals(integer, node.getItem());
     }
 
     @ParameterizedTest
     @CsvSource({
-            "100, 50, 25"
+            "4, 5, 3"
     })
-    public void getNextCorrect(int arg1, int arg2, int arg3){
+    public void getNextCorrect(int actual, int n, int p){
         //Habría que ir creando nodos anteriores y siguiente en bucle.
-        //DequeNode<Integer> aux = new DequeNode<>(Integer.valueOf(arg1),
-        //                         new DequeNode<Integer>(arg2, null, null), new DequeNode<Integer>(arg3, null, null));
+        //DequeNode<Integer> aux = new DequeNode<>(Integer.valueOf(actual),
+        //                         new DequeNode<Integer>(n, null, null), new DequeNode<Integer>(arg3, null, null));
         //assertEquals(aux, node.getNext));
-        new DequeNode<Integer>(arg2, null, null);
-        DequeNode<Integer> next = node.getNext();
-        assertEquals(Integer.valueOf(arg1), next.getItem());
-        assertEquals(Integer.valueOf(arg2), next.getNext().getItem());
+        DequeNode<Integer> nxt = node.getNext();
+        assertEquals(Integer.valueOf(actual), nxt.getItem());
+        assertEquals(Integer.valueOf(n), nxt.getNext().getItem());
         //assertEquals(node.getItem(), next.getPrevious().getItem());
-        assertEquals(Integer.valueOf(arg3), next.getPrevious().getItem());
+        assertEquals(Integer.valueOf(p), nxt.getPrevious().getItem());
+    }
+
+    static Stream<Arguments> nextCorrect(){
+        return Stream.of(
+                Arguments.of(4, 5, 3)
+        );
     }
 
     @ParameterizedTest
     @CsvSource({
-            "100, 50, 25"
+            "2, 3, 1"
     })
-    public void getPreviousCorrect(int arg1, int arg2, int arg3){
+    public void getPreviousCorrect(int actual, int n, int p){
         //Habría que ir creando nodos anteriores y siguiente en bucle.
         //DequeNode<Integer> aux = new DequeNode<>(Integer.valueOf(arg1),
-        //                         new DequeNode<Integer>(arg2, null, null), new DequeNode<Integer>(arg3, null, null));
+        //                         new DequeNode<Integer>(n, null, null), new DequeNode<Integer>(p, null, null));
         //assertEquals(aux, node.getPrevious));
-        new DequeNode<Integer>(arg2, null, null);
-        DequeNode<Integer> previous = node.getPrevious();
-        assertEquals(Integer.valueOf(arg1), previous.getItem());
+        DequeNode<Integer> prv = node.getPrevious();
+        assertEquals(Integer.valueOf(actual), prv.getItem());
         //assertEquals(node.getItem(), previous.getNext().getItem());
-        assertEquals(Integer.valueOf(arg2), previous.getNext().getItem());
-        assertEquals(Integer.valueOf(arg3), previous.getPrevious().getItem());
+        assertEquals(Integer.valueOf(n), prv.getNext().getItem());
+        assertEquals(Integer.valueOf(p), prv.getPrevious().getItem());
+    }
+
+    static Stream<Arguments> previousCorrect(){
+        return Stream.of(
+                Arguments.of(2, 3, 1)
+        );
     }
 
     @Test
@@ -85,6 +108,7 @@ class DequeueNodeTest {
     @Test
     public void isNotATerminalNodeCorrect(){
         assertTrue(node.isNotATerminalNode());
+        //assertFalse(node.isNotATerminalNode());
 
         /*
         assertTrue(!node.isFirstNode() && !node.isLastNode());
@@ -95,8 +119,8 @@ class DequeueNodeTest {
          */
     }
 
-    /** Cosas a cambiar:
-     * El setUp no se si es suficiente, es decir, he puesto que no tiene nodo anterior ni siguiente.
+    /** Cosas a tener en cuenta:
+     * El setUp no se si es  demasiado específico, ya que he creado 5 nodos, teniendo un lodo local con dos anteriores y dos siguientes.
      *
      * El getNextCorrect y getPreviousCorrect no se si sería correcto, ya que tanto para el nodo siguiente del siguiente,
      * y para el nodo anterior del siguiente (es decir, el actual) se compara por el item, en este caso Integers,
@@ -109,7 +133,7 @@ class DequeueNodeTest {
      * tiene que hacer de esa manera.
      *
      * Respecto a lo de probar que el previous del 1er nodo sea null y probar que el next del ultimo sea null,
-     * pienso que ya está implementado en los tests de isFirstNodePreviousNull y isLastNodeNextNull.
+     * pienso que ya está implementado de maera indirecta en los tests de isFirstNodePreviousNull y isLastNodeNextNull.
      *
      * He puesto aquí mis dudas principales para que sepais mis dudas y en caso de que falte algo o algo esté mal,
      * lo cambieis.
