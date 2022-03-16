@@ -43,7 +43,7 @@ public class DequeNode<T> {
     }
 
     void setNext(DequeNode<T> node){
-        this.next = next;
+        this.next = node;
     }
 
     void setPrevious(DequeNode<T> node){
