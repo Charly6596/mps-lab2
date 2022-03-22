@@ -69,14 +69,14 @@ class DequeueNodeTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {5})
+    @ValueSource(ints = {5, 3, -1})
     public void setItemCorrect(int n){
         node.setItem(n);
         assertEquals(n, node.getItem());
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {5})
+    @ValueSource(ints = {5, 3, -1})
     public void setNextCorrect(int n){
         DequeNode<Integer> next = new DequeNode<>(n, null, null);
         node.setNext(next);
@@ -84,7 +84,7 @@ class DequeueNodeTest {
     }
 
     @ParameterizedTest
-    @ValueSource(ints = {5})
+    @ValueSource(ints = {5, 3, -1})
     public void setPreviousCorrect(int n){
         DequeNode<Integer> previous = new DequeNode<>(n, null, null);
         node.setPrevious(previous);
@@ -144,24 +144,4 @@ class DequeueNodeTest {
         auxNext.setPrevious(next);
         node.setNext(next);
     }
-
-    /** Cosas a tener en cuenta:
-     * El setUp no se si es  demasiado específico, ya que he creado 5 nodos, teniendo un lodo local con dos anteriores y dos siguientes.
-     *
-     * El getNextCorrect y getPreviousCorrect no se si sería correcto, ya que tanto para el nodo siguiente del siguiente,
-     * y para el nodo anterior del siguiente (es decir, el actual) se compara por el item, en este caso Integers,
-     * cuando se debería compara el nodo entero. No lo hago porque habría que ir creando nodos anteriores y siguiente en bucle.
-     *
-     * En el isFirstNodePreviousNull y isLastNodeNextNull, se me hace raro estar comparando los nodos previous y next
-     * respectivamente con null en el while, y al final poner ese nodo en el assertNull. Si ya sabemos que es null.
-     *
-     * En el caso de isNotATerminalNodeCorrect, encuentro varias maneras de hacerlo, aunque no se si realmente se
-     * tiene que hacer de esa manera.
-     *
-     * Respecto a lo de probar que el previous del 1er nodo sea null y probar que el next del ultimo sea null,
-     * pienso que ya está implementado de maera indirecta en los tests de isFirstNodePreviousNull y isLastNodeNextNull.
-     *
-     * He puesto aquí mis dudas principales para que sepais mis dudas y en caso de que falte algo o algo esté mal,
-     * lo cambieis.
-     */
 }
