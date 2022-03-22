@@ -42,11 +42,16 @@ public class DequeNode<T> {
         return (!isFirstNode() && !isLastNode()) ;
     }
 
-    void setNext(DequeNode<T> node){
+    // Setters
+    public void setItem(T item) {
+        this.item = item;
+    }
+
+    public void setNext(DequeNode<T> node){
         this.next = node;
     }
 
-    void setPrevious(DequeNode<T> node){
+    public void setPrevious(DequeNode<T> node){
         this.previous = node;
     }
 }

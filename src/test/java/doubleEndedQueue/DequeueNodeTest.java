@@ -19,17 +19,7 @@ class DequeueNodeTest {
 
     @BeforeEach
     void setUp() {
-        DequeNode<Integer> next, previous, auxNext, auxPrevious;
         node = new DequeNode<>(3, null, null);
-        auxNext = new DequeNode<>(5, null, null);
-        auxPrevious = new DequeNode<>(1, null, null);
-        next = new DequeNode<>(4, auxNext, node);
-        previous = new DequeNode<>(2, node, auxPrevious);
-
-        auxNext.setPrevious(next);
-        auxPrevious.setNext(previous);
-        node.setNext(next);
-        node.setPrevious(previous);
     }
 
     @AfterEach
@@ -37,9 +27,10 @@ class DequeueNodeTest {
         node = null;
     }
 
-    @Test
-    public void getItemCorrect(){
-        Integer integer = Integer.valueOf(3);
+    @ParameterizedTest
+    @ValueSource(ints = {3})
+    public void getItemCorrect(int n){
+        Integer integer = Integer.valueOf(n);
         assertEquals(integer, node.getItem());
     }
 
@@ -52,17 +43,12 @@ class DequeueNodeTest {
         //DequeNode<Integer> aux = new DequeNode<>(Integer.valueOf(actual),
         //                         new DequeNode<Integer>(n, null, null), new DequeNode<Integer>(arg3, null, null));
         //assertEquals(aux, node.getNext));
+        addNextNodes();
         DequeNode<Integer> nxt = node.getNext();
         assertEquals(Integer.valueOf(actual), nxt.getItem());
         assertEquals(Integer.valueOf(n), nxt.getNext().getItem());
         //assertEquals(node.getItem(), next.getPrevious().getItem());
         assertEquals(Integer.valueOf(p), nxt.getPrevious().getItem());
-    }
-
-    static Stream<Arguments> nextCorrect(){
-        return Stream.of(
-                Arguments.of(4, 5, 3)
-        );
     }
 
     @ParameterizedTest
@@ -74,6 +60,7 @@ class DequeueNodeTest {
         //DequeNode<Integer> aux = new DequeNode<>(Integer.valueOf(arg1),
         //                         new DequeNode<Integer>(n, null, null), new DequeNode<Integer>(p, null, null));
         //assertEquals(aux, node.getPrevious));
+        addPreviousNodes();
         DequeNode<Integer> prv = node.getPrevious();
         assertEquals(Integer.valueOf(actual), prv.getItem());
         //assertEquals(node.getItem(), previous.getNext().getItem());
@@ -81,14 +68,32 @@ class DequeueNodeTest {
         assertEquals(Integer.valueOf(p), prv.getPrevious().getItem());
     }
 
-    static Stream<Arguments> previousCorrect(){
-        return Stream.of(
-                Arguments.of(2, 3, 1)
-        );
+    @ParameterizedTest
+    @ValueSource(ints = {5})
+    public void setItemCorrect(int n){
+        node.setItem(n);
+        assertEquals(n, node.getItem());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {5})
+    public void setNextCorrect(int n){
+        DequeNode<Integer> next = new DequeNode<>(n, null, null);
+        node.setNext(next);
+        assertEquals(next, node.getNext());
+    }
+
+    @ParameterizedTest
+    @ValueSource(ints = {5})
+    public void setPreviousCorrect(int n){
+        DequeNode<Integer> previous = new DequeNode<>(n, null, null);
+        node.setPrevious(previous);
+        assertEquals(previous, node.getPrevious());
     }
 
     @Test
     public void isFirstNodePreviousNull(){
+        addPreviousNodes();
         DequeNode<Integer> aux = node;
         while(!aux.isFirstNode()){
             aux = aux.getPrevious();
@@ -98,6 +103,7 @@ class DequeueNodeTest {
 
     @Test
     public void isLastNodeNextNull(){
+        addNextNodes();
         DequeNode<Integer> aux = node;
         while(!aux.isLastNode()){
             aux = aux.getNext();
@@ -107,6 +113,8 @@ class DequeueNodeTest {
 
     @Test
     public void isNotATerminalNodeCorrect(){
+        addNextNodes();
+        addPreviousNodes();
         assertTrue(node.isNotATerminalNode());
         //assertFalse(node.isNotATerminalNode());
 
@@ -117,6 +125,24 @@ class DequeueNodeTest {
         assertFalse(node.isFirstNode());
         assertFalse(node.isLastNode());
          */
+    }
+
+    private void addPreviousNodes(){
+        DequeNode<Integer> previous, auxPrevious;
+        auxPrevious = new DequeNode<>(1, null, null);
+        previous = new DequeNode<>(2, node, auxPrevious);
+
+        auxPrevious.setNext(previous);
+        node.setPrevious(previous);
+    }
+
+    private void addNextNodes(){
+        DequeNode<Integer> next, auxNext;
+        auxNext = new DequeNode<>(5, null, null);
+        next = new DequeNode<>(4, auxNext, node);
+
+        auxNext.setPrevious(next);
+        node.setNext(next);
     }
 
     /** Cosas a tener en cuenta:
