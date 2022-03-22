@@ -9,7 +9,8 @@ import java.util.Comparator;
  *
  * @param <T>
  */
-public class DequeNode<T>{
+
+public class DequeNode<T> {
     private T item;
     private DequeNode<T> next;
     private DequeNode<T> previous;
@@ -44,11 +45,16 @@ public class DequeNode<T>{
         return (!isFirstNode() && !isLastNode());
     }
 
-    void setNext(DequeNode<T> node) {
+    // Setters
+    public void setItem(T item) {
+        this.item = item;
+    }
+
+    public void setNext(DequeNode<T> node){
         this.next = node;
     }
 
-    void setPrevious(DequeNode<T> node) {
+    public void setPrevious(DequeNode<T> node){
         this.previous = node;
     }
 
