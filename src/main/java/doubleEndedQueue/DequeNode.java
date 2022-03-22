@@ -8,9 +8,9 @@ package doubleEndedQueue;
  * @param <T>
  */
 public class DequeNode<T> {
-    private T item ;
-    private DequeNode<T> next ;
-    private DequeNode<T> previous ;
+    private final T item;
+    private DequeNode<T> next;
+    private DequeNode<T> previous;
 
     public T getItem() {
         return item;
@@ -25,28 +25,28 @@ public class DequeNode<T> {
     }
 
     public DequeNode(T item, DequeNode<T> next, DequeNode<T> previous) {
-        this.item = item ;
-        this.next = next ;
-        this.previous = previous ;
+        this.item = item;
+        this.next = next;
+        this.previous = previous;
     }
 
     public boolean isFirstNode() {
-        return previous == null ;
+        return previous == null;
     }
 
     public boolean isLastNode() {
-        return next == null ;
+        return next == null;
     }
 
     public boolean isNotATerminalNode() {
-        return (!isFirstNode() && !isLastNode()) ;
+        return (!isFirstNode() && !isLastNode());
     }
 
-    void setNext(DequeNode<T> node){
+    void setNext(DequeNode<T> node) {
         this.next = node;
     }
 
-    void setPrevious(DequeNode<T> node){
+    void setPrevious(DequeNode<T> node) {
         this.previous = node;
     }
 }
