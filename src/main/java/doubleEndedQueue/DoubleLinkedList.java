@@ -102,8 +102,16 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
     }
 
     @Override
-    public void sort(Comparator<?> comparator) {
-
+    public void sort(Comparator<T> comparator) {
+        for(int iter = 0; iter < size()-1; iter++){
+            for(int position = 0; position <= size() - iter; position++){
+                if(comparator.compare(getAt(position).getItem(),getAt(position + 1).getItem()) < 0) {
+                    T aux = getAt(position).getItem();
+                    getAt(position).setItem(getAt(position + 1).getItem());
+                    getAt(position + 1).setItem(aux);
+                }
+            }
+        }
     }
 
     private void appendWhenEmpty(T item) {
