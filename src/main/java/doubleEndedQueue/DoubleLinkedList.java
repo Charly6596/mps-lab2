@@ -1,19 +1,21 @@
 package doubleEndedQueue;
 
+import java.util.Comparator;
+
 public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
     private DequeNode<T> first;
     private DequeNode<T> last;
     private int size;
 
-    public DoubleLinkedList(){
+    public DoubleLinkedList() {
         size = 0;
     }
 
     @Override
     public void append(T item) {
-        if (size() == 0){
+        if (size() == 0) {
             appendWhenEmpty(item);
-        }else {
+        } else {
             DequeNode<T> node = new DequeNode<>(item, last, null);
             last.setPrevious(node);
             last = node;
@@ -24,9 +26,9 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
 
     @Override
     public void appendLeft(T item) {
-        if (size() == 0){
+        if (size() == 0) {
             appendWhenEmpty(item);
-        }else {
+        } else {
             DequeNode<T> node = new DequeNode<>(item, null, first);
             first.setNext(node);
             first = node;
@@ -40,9 +42,9 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
         if (size() == 0)
             throw new RuntimeException("Error at delete. Can't delete over empty queue");
 
-        if (size() == 1){
+        if (size() == 1) {
             deleteWhenOnlyOneNode();
-        }else {
+        } else {
             first = first.getPrevious();
             first.setNext(null);
         }
@@ -55,9 +57,9 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
         if (size() == 0)
             throw new RuntimeException("Error at delete. Can't delete over empty queue");
 
-        if (size() == 1){
+        if (size() == 1) {
             deleteWhenOnlyOneNode();
-        }else {
+        } else {
             last = last.getNext();
             last.setPrevious(null);
         }
@@ -82,6 +84,26 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
     @Override
     public int size() {
         return size;
+    }
+
+    @Override
+    public DequeNode<T> getAt(int position) {
+        return null;
+    }
+
+    @Override
+    public DequeNode<T> find(T item) {
+        return null;
+    }
+
+    @Override
+    public void delete(DequeNode<T> node) {
+
+    }
+
+    @Override
+    public void sort(Comparator<?> comparator) {
+
     }
 
     private void appendWhenEmpty(T item) {
