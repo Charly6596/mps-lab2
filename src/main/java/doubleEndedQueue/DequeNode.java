@@ -8,7 +8,7 @@ package doubleEndedQueue;
  * @param <T>
  */
 public class DequeNode<T> {
-    private final T item;
+    private T item;
     private DequeNode<T> next;
     private DequeNode<T> previous;
 
