@@ -2,6 +2,7 @@ package doubleEndedQueue;
 
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
+import org.junit.jupiter.api.Nested;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.Arguments;
@@ -27,68 +28,80 @@ class DequeueNodeTest {
         node = null;
     }
 
-    @ParameterizedTest
-    @ValueSource(ints = {3})
-    public void getItemCorrect(int n){
-        Integer integer = Integer.valueOf(n);
-        assertEquals(integer, node.getItem());
-    }
+    @Nested
+    class Construction{
 
-    @ParameterizedTest
-    @CsvSource({
-            "4, 5, 3"
-    })
-    public void getNextCorrect(int actual, int n, int p){
-        //Habría que ir creando nodos anteriores y siguiente en bucle.
-        //DequeNode<Integer> aux = new DequeNode<>(Integer.valueOf(actual),
-        //                         new DequeNode<Integer>(n, null, null), new DequeNode<Integer>(arg3, null, null));
-        //assertEquals(aux, node.getNext));
-        addNextNodes();
-        DequeNode<Integer> nxt = node.getNext();
-        assertEquals(Integer.valueOf(actual), nxt.getItem());
-        assertEquals(Integer.valueOf(n), nxt.getNext().getItem());
-        //assertEquals(node.getItem(), next.getPrevious().getItem());
-        assertEquals(Integer.valueOf(p), nxt.getPrevious().getItem());
-    }
+        @Nested
+        class GetMethods{
 
-    @ParameterizedTest
-    @CsvSource({
-            "2, 3, 1"
-    })
-    public void getPreviousCorrect(int actual, int n, int p){
-        //Habría que ir creando nodos anteriores y siguiente en bucle.
-        //DequeNode<Integer> aux = new DequeNode<>(Integer.valueOf(arg1),
-        //                         new DequeNode<Integer>(n, null, null), new DequeNode<Integer>(p, null, null));
-        //assertEquals(aux, node.getPrevious));
-        addPreviousNodes();
-        DequeNode<Integer> prv = node.getPrevious();
-        assertEquals(Integer.valueOf(actual), prv.getItem());
-        //assertEquals(node.getItem(), previous.getNext().getItem());
-        assertEquals(Integer.valueOf(n), prv.getNext().getItem());
-        assertEquals(Integer.valueOf(p), prv.getPrevious().getItem());
-    }
+            @ParameterizedTest
+            @ValueSource(ints = {3})
+            public void getItemCorrect(int n){
+                Integer integer = Integer.valueOf(n);
+                assertEquals(integer, node.getItem());
+            }
 
-    @ParameterizedTest
-    @ValueSource(ints = {5})
-    public void setItemCorrect(int n){
-        node.setItem(n);
-        assertEquals(n, node.getItem());
-    }
+            @ParameterizedTest
+            @CsvSource({
+                    "4, 5, 3"
+            })
+            public void getNextCorrect(int actual, int n, int p){
+                //Habría que ir creando nodos anteriores y siguiente en bucle.
+                //DequeNode<Integer> aux = new DequeNode<>(Integer.valueOf(actual),
+                //                         new DequeNode<Integer>(n, null, null), new DequeNode<Integer>(arg3, null, null));
+                //assertEquals(aux, node.getNext));
+                addNextNodes();
+                DequeNode<Integer> nxt = node.getNext();
+                assertEquals(Integer.valueOf(actual), nxt.getItem());
+                assertEquals(Integer.valueOf(n), nxt.getNext().getItem());
+                //assertEquals(node.getItem(), next.getPrevious().getItem());
+                assertEquals(Integer.valueOf(p), nxt.getPrevious().getItem());
+            }
 
-    @ParameterizedTest
-    @ValueSource(ints = {5})
-    public void setNextCorrect(int n){
-        DequeNode<Integer> next = new DequeNode<>(n, null, null);
-        node.setNext(next);
-        assertEquals(next, node.getNext());
-    }
+            @ParameterizedTest
+            @CsvSource({
+                    "2, 3, 1"
+            })
+            public void getPreviousCorrect(int actual, int n, int p){
+                //Habría que ir creando nodos anteriores y siguiente en bucle.
+                //DequeNode<Integer> aux = new DequeNode<>(Integer.valueOf(arg1),
+                //                         new DequeNode<Integer>(n, null, null), new DequeNode<Integer>(p, null, null));
+                //assertEquals(aux, node.getPrevious));
+                addPreviousNodes();
+                DequeNode<Integer> prv = node.getPrevious();
+                assertEquals(Integer.valueOf(actual), prv.getItem());
+                //assertEquals(node.getItem(), previous.getNext().getItem());
+                assertEquals(Integer.valueOf(n), prv.getNext().getItem());
+                assertEquals(Integer.valueOf(p), prv.getPrevious().getItem());
+            }
+        }
 
-    @ParameterizedTest
-    @ValueSource(ints = {5})
-    public void setPreviousCorrect(int n){
-        DequeNode<Integer> previous = new DequeNode<>(n, null, null);
-        node.setPrevious(previous);
-        assertEquals(previous, node.getPrevious());
+        @Nested
+        class SetMethods{
+
+            @ParameterizedTest
+            @ValueSource(ints = {5, 3, -1})
+            public void setItemCorrect(int n){
+                node.setItem(n);
+                assertEquals(n, node.getItem());
+            }
+
+            @ParameterizedTest
+            @ValueSource(ints = {5, 3, -1})
+            public void setNextCorrect(int n){
+                DequeNode<Integer> next = new DequeNode<>(n, null, null);
+                node.setNext(next);
+                assertEquals(next, node.getNext());
+            }
+
+            @ParameterizedTest
+            @ValueSource(ints = {5, 3, -1})
+            public void setPreviousCorrect(int n){
+                DequeNode<Integer> previous = new DequeNode<>(n, null, null);
+                node.setPrevious(previous);
+                assertEquals(previous, node.getPrevious());
+            }
+        }
     }
 
     @Test
@@ -144,24 +157,4 @@ class DequeueNodeTest {
         auxNext.setPrevious(next);
         node.setNext(next);
     }
-
-    /** Cosas a tener en cuenta:
-     * El setUp no se si es  demasiado específico, ya que he creado 5 nodos, teniendo un lodo local con dos anteriores y dos siguientes.
-     *
-     * El getNextCorrect y getPreviousCorrect no se si sería correcto, ya que tanto para el nodo siguiente del siguiente,
-     * y para el nodo anterior del siguiente (es decir, el actual) se compara por el item, en este caso Integers,
-     * cuando se debería compara el nodo entero. No lo hago porque habría que ir creando nodos anteriores y siguiente en bucle.
-     *
-     * En el isFirstNodePreviousNull y isLastNodeNextNull, se me hace raro estar comparando los nodos previous y next
-     * respectivamente con null en el while, y al final poner ese nodo en el assertNull. Si ya sabemos que es null.
-     *
-     * En el caso de isNotATerminalNodeCorrect, encuentro varias maneras de hacerlo, aunque no se si realmente se
-     * tiene que hacer de esa manera.
-     *
-     * Respecto a lo de probar que el previous del 1er nodo sea null y probar que el next del ultimo sea null,
-     * pienso que ya está implementado de maera indirecta en los tests de isFirstNodePreviousNull y isLastNodeNextNull.
-     *
-     * He puesto aquí mis dudas principales para que sepais mis dudas y en caso de que falte algo o algo esté mal,
-     * lo cambieis.
-     */
 }
