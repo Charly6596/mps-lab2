@@ -226,6 +226,12 @@ public class DequeNode<T> {
   - Returns null when item not found
   - Returns null when list is empty
   - Returns element when found
+- Delete
+  - Throws exception when node not in queue
+  - Throws exception when node is null
+  - Throws exception when queue is empty
+  - Size decreases when we delete 1 item
+  - find = null when node is deleted
 
 ### Queue Node 
 - Construction:
