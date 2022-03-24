@@ -11,7 +11,7 @@ import java.util.Comparator;
  */
 
 public class DequeNode<T> {
-    private T item;
+    private final T item;
     private DequeNode<T> next;
     private DequeNode<T> previous;
 
@@ -50,7 +50,7 @@ public class DequeNode<T> {
         this.item = item;
     }
 
-    public void setNext(DequeNode<T> node){
+    public void setNext(DequeNode<T> node) {
         this.next = node;
     }
 
