@@ -131,6 +131,15 @@ Each node has pointers to the next and previous nodes.
 The previous and next of the first and last node of the queue is null.
 
 ```
+package doubleEndedQueue;
+
+/**
+ * Class representing a node of a double-ended queue (deque). Each node has pointers to
+ * the next and previous nodes.
+ * The previous and next of the first and last node of the deque is null.
+ *
+ * @param <T>
+ */
 public class DequeNode<T> {
     private T item ;
     private DequeNode<T> next ;
@@ -166,11 +175,16 @@ public class DequeNode<T> {
         return (!isFirstNode() && !isLastNode()) ;
     }
 
-    void setNext(DequeNode<T> node){
-        this.next = next;
+    // Setters
+    public void setItem(T item) {
+        this.item = item;
     }
 
-    void setPrevious(DequeNode<T> node){
+    public void setNext(DequeNode<T> node){
+        this.next = node;
+    }
+
+    public void setPrevious(DequeNode<T> node){
         this.previous = node;
     }
 }
@@ -210,13 +224,19 @@ public class DequeNode<T> {
   - Get first index = peekFirst
 ### Queue Node 
 
-- Construction.
-  - Get the item at constructor.
-  - Get the next at constructor.
-  - Get the prev at constructor.
-- Terminal node.
+- Construction:
+  - GetItemCorrect() -> Compare if getItem() returns the item of a node.
+  - GetNextCorrect() -> Compare if getNext() returns the item of a node.
+  - GetPreviousCorrect() -> Compare if getPrevious() returns the item of a node.
+  - SetItemCorrect() -> Compare if setItem() sets the item of a node.
+  - SetNextCorrect() -> Compare if setNext() sets the next node of a node.
+  - SetPreviousCorrect() -> Compare if setNext() sets the previous node of a node.
+- isFirstNodePreviousNull() -> Checks if isFirstNode() is true, then the previous node is null.
+- isFirstNodePreviousNull() -> Checks if isLastNode() is true, then the next node is null.
+- Get if a node is a terminal node:
+- isNotATerminalNodeCorrect() -> Checks if isNotATerminalNode() is true, then:
   - Is terminal node if next is null.
-  - Is terminal node if prev is null.
+  - Is terminal node if previous is null.
   - Is terminal node if both next and prev are null.
 
 ## Screenshots

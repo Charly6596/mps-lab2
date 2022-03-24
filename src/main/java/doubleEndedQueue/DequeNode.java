@@ -1,5 +1,7 @@
 package doubleEndedQueue;
 
+import java.util.Comparator;
+
 /**
  * Class representing a node of a double-ended queue (deque). Each node has pointers to
  * the next and previous nodes.
@@ -7,6 +9,7 @@ package doubleEndedQueue;
  *
  * @param <T>
  */
+
 public class DequeNode<T> {
     private final T item;
     private DequeNode<T> next;
@@ -42,11 +45,20 @@ public class DequeNode<T> {
         return (!isFirstNode() && !isLastNode());
     }
 
-    void setNext(DequeNode<T> node) {
+    // Setters
+    public void setItem(T item) {
+        this.item = item;
+    }
+
+    public void setNext(DequeNode<T> node) {
         this.next = node;
     }
 
-    void setPrevious(DequeNode<T> node) {
+    public void setPrevious(DequeNode<T> node){
         this.previous = node;
+    }
+
+    public void setItem(T item) {
+        this.item = item;
     }
 }
