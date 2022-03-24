@@ -1,194 +1,12 @@
 # Double Ended Queue
 
-## Classes to be tested
+## Test Interface strategy
 
-These are the classes interfaces that will be tested.
+Since we have been given an interface to test, we have created a test class that is also an interface. This way the test is extensible to any class that implements the interface.
 
-### Double Ended Queue
+To use this strategy we have relied on the following StackOverflow thread:
 
-Interface of Double Ended Queue.
-
-```
-public interface DoubleEndedQueue<T> {
-    // Basic operations
-    void append(T item) ;
-    void appendLeft(T item) ;
-    void deleteFirst() ;
-    void deleteLast() ;
-    T peekFirst() ;
-    T peekLast() ;
-    int size() ;
-}
-```
-
-### DoubleLinkedList
-
-Our implementation of DoubleEndedQueue.
-
-```
-public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
-    private DequeNode<T> first;
-    private DequeNode<T> last;
-    private int size;
-
-    public DoubleLinkedList(){
-        size = 0;
-    }
-
-    @Override
-    public void append(T item) {
-        if (size() == 0){
-            appendWhenEmpty(item);
-        }else {
-            DequeNode<T> node = new DequeNode<>(item, last, null);
-            last.setPrevious(node);
-            last = node;
-        }
-
-        size++;
-    }
-
-    @Override
-    public void appendLeft(T item) {
-        if (size() == 0){
-            appendWhenEmpty(item);
-        }else {
-            DequeNode<T> node = new DequeNode<>(item, null, first);
-            first.setNext(node);
-            first = node;
-        }
-
-        size++;
-    }
-
-    @Override
-    public void deleteFirst() {
-        if (size() == 0)
-            throw new RuntimeException("Error at delete. Can't delete over empty queue");
-
-        if (size() == 1){
-            deleteWhenOnlyOneNode();
-        }else {
-            first = first.getPrevious();
-            first.setNext(null);
-        }
-
-        size--;
-    }
-
-    @Override
-    public void deleteLast() {
-        if (size() == 0)
-            throw new RuntimeException("Error at delete. Can't delete over empty queue");
-
-        if (size() == 1){
-            deleteWhenOnlyOneNode();
-        }else {
-            last = last.getNext();
-            last.setPrevious(null);
-        }
-
-        size--;
-    }
-
-    @Override
-    public T peekFirst() {
-        if (size() == 0)
-            throw new RuntimeException("Error at peek. Can't peek over empty queue");
-        return first.getItem();
-    }
-
-    @Override
-    public T peekLast() {
-        if (size() == 0)
-            throw new RuntimeException("Error at peek. Can't peek over empty queue");
-        return last.getItem();
-    }
-
-    @Override
-    public int size() {
-        return size;
-    }
-
-    private void appendWhenEmpty(T item) {
-        DequeNode<T> node;
-        node = new DequeNode<>(item, null, null);
-        first = node;
-        last = node;
-    }
-
-    private void deleteWhenOnlyOneNode() {
-        first = null;
-        last = null;
-    }
-}
-```
-
-### Queue Node
-
-Class representing a node of a double-ended queue (deque). 
-Each node has pointers to the next and previous nodes. 
-The previous and next of the first and last node of the queue is null.
-
-```
-package doubleEndedQueue;
-
-/**
- * Class representing a node of a double-ended queue (deque). Each node has pointers to
- * the next and previous nodes.
- * The previous and next of the first and last node of the deque is null.
- *
- * @param <T>
- */
-public class DequeNode<T> {
-    private T item ;
-    private DequeNode<T> next ;
-    private DequeNode<T> previous ;
-
-    public T getItem() {
-        return item;
-    }
-
-    public DequeNode<T> getNext() {
-        return next;
-    }
-
-    public DequeNode<T> getPrevious() {
-        return previous;
-    }
-
-    public DequeNode(T item, DequeNode<T> next, DequeNode<T> previous) {
-        this.item = item ;
-        this.next = next ;
-        this.previous = previous ;
-    }
-
-    public boolean isFirstNode() {
-        return previous == null ;
-    }
-
-    public boolean isLastNode() {
-        return next == null ;
-    }
-
-    public boolean isNotATerminalNode() {
-        return (!isFirstNode() && !isLastNode()) ;
-    }
-
-    // Setters
-    public void setItem(T item) {
-        this.item = item;
-    }
-
-    public void setNext(DequeNode<T> node){
-        this.next = node;
-    }
-
-    public void setPrevious(DequeNode<T> node){
-        this.previous = node;
-    }
-}
-```
+[How to test different implementations for an interface in Junit5 without duplicating the code](https://stackoverflow.com/questions/55437810/how-to-test-different-implementations-for-an-interface-in-junit5-without-duplica)
 
 ## Test Cases
 
@@ -204,6 +22,11 @@ public class DequeNode<T> {
   - deleteLast over empty queue throws Exception.
   - deleteFirst deletes left most node.
   - deleteLast deletes right most node.
+  - Throws exception when node not in queue
+  - Throws exception when node is null
+  - Throws exception when queue is empty
+  - Size decreases when we delete 1 item
+  - find = null when node is deleted
 - Peek. 
   - peekFirst when empty throws Exception.
   - peekLast when empty throws Exception.
@@ -216,6 +39,7 @@ public class DequeNode<T> {
   - deleteLast decrease size by one.
   - peekFirst doesn't change size.
   - peekLast doesn't change size.
+  - sort doesn't change size.
 - GetAt
   - on empty list throws exception
   - on non-existing index throws exception
@@ -226,12 +50,15 @@ public class DequeNode<T> {
   - Returns null when item not found
   - Returns null when list is empty
   - Returns element when found
-- Delete
-  - Throws exception when node not in queue
-  - Throws exception when node is null
-  - Throws exception when queue is empty
-  - Size decreases when we delete 1 item
-  - find = null when node is deleted
+- Sort 
+  - sort over empty queue don't throw exception
+  - frequency of elements are the same after sort
+  - sort sorts correctly unordered list without repetition
+  - sort sorts correctly unordered list with repetition
+  - sort sorts correctly a list in reverse order without repetition
+  - sort sorts correctly a list in reverse order with repetition
+  - Doesnt change the order of a list already ordered without repetition
+  - Doesnt change the order of a list already ordered with repetition
 
 ### Queue Node 
 - Construction:
