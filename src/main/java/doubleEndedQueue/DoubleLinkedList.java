@@ -107,7 +107,12 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
 
     @Override
     public DequeNode<T> find(T item) {
-        return null;
+        var current = first;
+
+        while(current != null && current.getItem() != item) {
+            current = current.getNext();
+        }
+        return current;
     }
 
     @Override
@@ -119,8 +124,10 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
     public void sort(Comparator<T> comparator) {
         for(int iter = 0; iter < size()-1; iter++){
             for(int position = 0; position <= size() - iter; position++){
-                if(comparator.compare(getAt(position).getItem(),getAt(position + 1).getItem()) < 0) {
-                    T aux = getAt(position).getItem();
+                var item1 = getAt(position).getItem();
+                var item2 = getAt(position + 1).getItem();
+                if(comparator.compare(item1, item2) < 0) {
+                    var aux = getAt(position).getItem();
                     getAt(position).setItem(getAt(position + 1).getItem());
                     getAt(position + 1).setItem(aux);
                 }

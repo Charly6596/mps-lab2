@@ -222,8 +222,12 @@ public class DequeNode<T> {
   - on existing index returns the correct element
   - Get last index = peekLast
   - Get first index = peekFirst
-### Queue Node 
+- Find
+  - Returns null when item not found
+  - Returns null when list is empty
+  - Returns element when found
 
+### Queue Node 
 - Construction:
   - GetItemCorrect() -> Compare if getItem() returns the item of a node.
   - GetNextCorrect() -> Compare if getNext() returns the item of a node.
@@ -240,13 +244,10 @@ public class DequeNode<T> {
   - Is terminal node if both next and prev are null.
 
 ## Screenshots
-
 Screenshots of the results
 
 ### Test passed
-
 ![Test Passed](./imagenes/testPassed.png)
 
 ### Coverage
-
 ![Coverage](./imagenes/coverage.png)
