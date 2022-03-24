@@ -16,8 +16,8 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
         if (size() == 0) {
             appendWhenEmpty(item);
         } else {
-            DequeNode<T> node = new DequeNode<>(item, last, null);
-            last.setPrevious(node);
+            var node = new DequeNode<>(item, null, last);
+            last.setNext(node);
             last = node;
         }
 
@@ -29,8 +29,8 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
         if (size() == 0) {
             appendWhenEmpty(item);
         } else {
-            DequeNode<T> node = new DequeNode<>(item, null, first);
-            first.setNext(node);
+            var node = new DequeNode<>(item, first, null);
+            first.setPrevious(node);
             first = node;
         }
 
@@ -45,8 +45,8 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
         if (size() == 1) {
             deleteWhenOnlyOneNode();
         } else {
-            first = first.getPrevious();
-            first.setNext(null);
+            first = first.getNext();
+            first.setPrevious(null);
         }
 
         size--;
@@ -60,8 +60,8 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
         if (size() == 1) {
             deleteWhenOnlyOneNode();
         } else {
-            last = last.getNext();
-            last.setPrevious(null);
+            last = last.getPrevious();
+            last.setNext(null);
         }
 
         size--;
@@ -107,8 +107,7 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
     }
 
     private void appendWhenEmpty(T item) {
-        DequeNode<T> node;
-        node = new DequeNode<>(item, null, null);
+        var node = new DequeNode<>(item, null, null);
         first = node;
         last = node;
     }
