@@ -4,9 +4,11 @@ import auxiliaryClasses.IntegerComparator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
@@ -182,20 +184,34 @@ interface DoubleEndedQueueTest{
     }
 
     // Sort
+    
     @ParameterizedTest
-    @MethodSource("ArraysOfItems")
-    @DisplayName("sort sorts correctly")
+    @MethodSource("unorderedSet")
+    @DisplayName("sort sorts correctly unordered list without repetition")
     default void sortsCorrectly(List<Integer> list){
-        for(Integer item : list){
-            getQueue().append(item);
-        }
+        sortAndAssertItsRight(list);
+    }
+
+    private void sortAndAssertItsRight(List<Integer> list) {
+        addAll(list);
 
         IntegerComparator comparator = new IntegerComparator();
-        getQueue().sort(new IntegerComparator());
+        getQueue().sort(comparator);
 
         for(int i = 0; i < list.size() - 1; i++){
-            assertTrue(comparator.compare(getQueue().getAt(i).getItem(), getQueue().getAt(i+1).getItem()) < 0);
+            assertTrue(compareConsecutive(comparator, i) < 0);
         }
+    }
+
+
+    // Arguments method
+
+    default Stream<Arguments> unorderedSet(){
+        return Stream.of(
+                Arguments.of(2, 1, 3, 5, 4),
+                Arguments.of(100, 1, 98, 56, 9),
+                Arguments.of(5, 7, 2, 9, 3, 4, 8)
+        );
     }
 
     // Auxiliary methods
@@ -204,5 +220,19 @@ interface DoubleEndedQueueTest{
         for (int i = 0; i < numberOfItems; i++){
             getQueue().append(i);
         }
+    }
+
+    private void addAll(List<Integer> list) {
+        for(Integer item : list){
+            getQueue().append(item);
+        }
+    }
+
+    default Integer getItemAt(int pos){
+        return getQueue().getAt(pos).getItem();
+    }
+
+    default int compareConsecutive(Comparator<Integer> comparator, int pos){
+        return comparator.compare(getItemAt(pos), getItemAt(pos + 1));
     }
 }
