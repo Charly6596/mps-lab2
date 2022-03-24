@@ -9,7 +9,6 @@ import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import java.util.Comparator;
-import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -184,33 +183,111 @@ interface DoubleEndedQueueTest{
     }
 
     // Sort
-    
-    @ParameterizedTest
-    @MethodSource("unorderedSet")
-    @DisplayName("sort sorts correctly unordered list without repetition")
-    default void sortsCorrectly(List<Integer> list){
-        sortAndAssertItsRight(list);
-    }
 
-    private void sortAndAssertItsRight(List<Integer> list) {
+    private void sortAndAssertItsRight(int[] list) {
         addAll(list);
 
         IntegerComparator comparator = new IntegerComparator();
         getQueue().sort(comparator);
 
-        for(int i = 0; i < list.size() - 1; i++){
-            assertTrue(compareConsecutive(comparator, i) < 0);
+        for(int i = 0; i < list.length - 1; i++){
+            assertTrue(compareConsecutive(comparator, i) <= 0);
         }
     }
 
+    @ParameterizedTest
+    @MethodSource("unorderedSet")
+    @DisplayName("sort sorts correctly unordered list without repetition")
+    default void sortsCorrectlyUnorderedSet(int[] list){
+        sortAndAssertItsRight(list);
+    }
+    
+    @ParameterizedTest
+    @MethodSource("unorderedList")
+    @DisplayName("sort sorts correctly unordered list with repetition")
+    default void sortsCorrectlyUnorderedList(int[] list){
+        sortAndAssertItsRight(list);
+    }
+
+    @ParameterizedTest
+    @MethodSource("reverseOrderSet")
+    @DisplayName("sort sorts correctly a list in reverse order without repetition")
+    default void sortsCorrectlyReverseOrderSet(int[] list){
+        sortAndAssertItsRight(list);
+    }
+
+    @ParameterizedTest
+    @MethodSource("reverseOrderList")
+    @DisplayName("sort sorts correctly a list in reverse order with repetition")
+    default void sortsCorrectlyReverseOrderList(int[] list){
+        sortAndAssertItsRight(list);
+    }
+
+    @ParameterizedTest
+    @MethodSource("orderedSet")
+    @DisplayName("Doesnt change the order of a list already ordered without repetition")
+    default void dontChangeTheOrderOfOrderedSet(int[] list){
+        sortAndAssertItsRight(list);
+    }
+
+    @ParameterizedTest
+    @MethodSource("orderedList")
+    @DisplayName("Doesnt change the order of a list already ordered with repetition")
+    default void dontChangeTheOrderOfOrderedList(int[] list){
+        sortAndAssertItsRight(list);
+    }
 
     // Arguments method
 
-    default Stream<Arguments> unorderedSet(){
+    static Stream<Arguments> unorderedSet(){
         return Stream.of(
-                Arguments.of(2, 1, 3, 5, 4),
-                Arguments.of(100, 1, 98, 56, 9),
-                Arguments.of(5, 7, 2, 9, 3, 4, 8)
+                Arguments.of(new int[]{2, 1}),
+                Arguments.of(new int[]{2, 1, 3}),
+                Arguments.of(new int[]{2, 1, 3, 5, 4}),
+                Arguments.of(new int[]{100, 1, 98, 56, 9}),
+                Arguments.of(new int[]{5, 7, 2, 9, 3, 4, 8})
+        );
+    }
+
+    static Stream<Arguments> unorderedList(){
+        return Stream.of(
+                Arguments.of(new int[]{2, 1, 1, 2}),
+                Arguments.of(new int[]{2, 1, 3, 2, 3}),
+                Arguments.of(new int[]{2, 1, 3, 5, 4, 3, 3, 3}),
+                Arguments.of(new int[]{100, 1, 98, 56, 9, 98, 9}),
+                Arguments.of(new int[]{5, 7, 2, 9, 3, 4, 8, 2, 2, 2})
+        );
+    }
+
+    static Stream<Arguments> reverseOrderSet(){
+        return Stream.of(
+                Arguments.of(new int[]{2, 1}),
+                Arguments.of(new int[]{3, 2, 1}),
+                Arguments.of(new int[]{545, 21, 4})
+        );
+    }
+
+    static Stream<Arguments> reverseOrderList(){
+        return Stream.of(
+                Arguments.of(new int[]{2, 2, 1}),
+                Arguments.of(new int[]{3, 3, 2, 2, 1, 1, 1, 1}),
+                Arguments.of(new int[]{545, 21, 21, 21, 21, 4, 4, 4})
+        );
+    }
+
+    static Stream<Arguments> orderedSet(){
+        return Stream.of(
+                Arguments.of(new int[]{1, 2}),
+                Arguments.of(new int[]{1, 2, 3}),
+                Arguments.of(new int[]{3, 100, 2349})
+        );
+    }
+
+    static Stream<Arguments> orderedList(){
+        return Stream.of(
+                Arguments.of(new int[]{1, 2, 2, 2}),
+                Arguments.of(new int[]{1, 1, 1, 2, 3, 3}),
+                Arguments.of(new int[]{3, 3, 100, 100, 2349})
         );
     }
 
@@ -222,7 +299,7 @@ interface DoubleEndedQueueTest{
         }
     }
 
-    private void addAll(List<Integer> list) {
+    private void addAll(int[] list) {
         for(Integer item : list){
             getQueue().append(item);
         }
