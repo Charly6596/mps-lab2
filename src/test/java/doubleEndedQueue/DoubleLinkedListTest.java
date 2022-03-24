@@ -3,14 +3,14 @@ package doubleEndedQueue;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Nested;
+import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
 import org.junit.jupiter.params.provider.CsvSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
 import static org.junit.jupiter.api.Assertions.*;
-import static org.junit.jupiter.api.Assertions.assertSame;
 
-class DoubleLinkedListTest implements DoubleEndedQueueTest{
+class DoubleLinkedListTest implements DoubleEndedQueueTest {
     DoubleLinkedList<Integer> list;
 
     @BeforeEach
@@ -29,11 +29,8 @@ class DoubleLinkedListTest implements DoubleEndedQueueTest{
     }
 
 
-
     @Nested
     class GetAtTest {
-        // GetAt tests
-
         @ParameterizedTest
         @ValueSource(ints = {0, 1, 2, 3})
         void getAtEmptyListThrowsException(int pos) {
@@ -92,6 +89,43 @@ class DoubleLinkedListTest implements DoubleEndedQueueTest{
             Integer item = 100;
             queue.append(item);
             assertSame(getQueue().peekLast(), queue.getAt(initialSize).getItem());
+        }
+    }
+
+    @Nested
+    class FindTests {
+        @Test
+        void shouldReturnNullWhenQueueIsEmpty() {
+            var queue = getQueue();
+            var actual = queue.find(100);
+            assertNull(actual);
+        }
+
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 2, 30})
+        void shouldReturnNullWhenQueueDoesNotHaveItem(int initialSize) {
+            var queue = getQueue();
+            append(initialSize);
+            var actual = queue.find(100);
+            assertNull(actual);
+        }
+
+        @ParameterizedTest
+        @CsvSource({
+                "0,0",
+                "0,10", // item at first pos
+                "1,1", //item at the middle
+                "2,10",
+                "30,35"
+        })
+        void shouldReturnElementWhenFound(int sizeLeft, int sizeRight) {
+            var queue = getQueue();
+            var item = 100;
+            append(sizeLeft);
+            queue.append(item);
+            append(sizeRight);
+            var actual = queue.find(item);
+            assertEquals(item, actual.getItem());
         }
     }
 }
