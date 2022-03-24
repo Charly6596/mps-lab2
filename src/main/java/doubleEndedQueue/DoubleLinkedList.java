@@ -117,7 +117,24 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
 
     @Override
     public void delete(DequeNode<T> node) {
+        if(node == null) {
+            throw new RuntimeException();
+        }
 
+        var current = first;
+
+        while(current != null && !current.equals(node)) {
+            current = current.getNext();
+        }
+
+        if(current == null) {
+            throw new RuntimeException();
+        }
+
+        var prev = current.getPrevious();
+        var next = current.getNext();
+        prev.setNext(next);
+        size--;
     }
 
     @Override

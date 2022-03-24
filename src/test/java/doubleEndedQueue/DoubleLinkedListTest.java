@@ -59,10 +59,12 @@ class DoubleLinkedListTest implements DoubleEndedQueueTest {
         @ParameterizedTest
         @CsvSource({
                 "0, 1, 0",
+                "1, 10, 3",
+                "5, 1, 8",
         })
         void getAtExistingPositionReturnsCorrectElement(int rightSize, Integer value, int pos) {
             var queue = getQueue();
-            append(pos - 1);
+            append(pos);
             queue.append(value);
             var actual = queue.getAt(pos).getItem();
             assertEquals(value, actual, "when does not have items at the right");
@@ -126,6 +128,44 @@ class DoubleLinkedListTest implements DoubleEndedQueueTest {
             append(sizeRight);
             var actual = queue.find(item);
             assertEquals(item, actual.getItem());
+        }
+    }
+
+    @Nested
+    class DeleteTests {
+        @ParameterizedTest
+        @ValueSource(ints = {0, 1, 10})
+        void shouldThrowExceptionWhenItemNotInQueue(int initialSize) {
+            var queue = getQueue();
+            append(initialSize);
+            var node = new DequeNode<>(1, null, null);
+            assertThrows(RuntimeException.class, () -> queue.delete(node));
+        }
+
+        @Test
+        void sizeShouldDecreaseWhenNodeDeleted() {
+            var queue = getQueue();
+            append(10);
+            var expected = queue.size() - 1;
+            var node = queue.getAt(2);
+            queue.delete(node);
+            assertEquals(expected, queue.size());
+        }
+
+        @Test
+        void itemNotFoundWhenItIsDeleted() {
+            var queue = getQueue();
+            append(10);
+            var node = queue.getAt(2);
+            var item = node.getItem();
+            queue.delete(node);
+            assertNull(queue.find(item));
+        }
+
+        @Test
+        void shouldThrowExceptionWhenNodeIsNull() {
+            var queue = getQueue();
+            assertThrows(RuntimeException.class, () -> queue.delete(null));
         }
     }
 }
