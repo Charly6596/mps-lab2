@@ -16,6 +16,14 @@ import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
 
+/**
+ * Since we have been given an interface to test, we have created a test class that is also an interface. This way the test is extensible to any class that implements the interface.
+ *
+ * To use this strategy we have relied on the following StackOverflow thread:
+ *
+ * [How to test different implementations for an interface in Junit5 without duplicating the code](https://stackoverflow.com/questions/55437810/how-to-test-different-implementations-for-an-interface-in-junit5-without-duplica)
+ */
+
 interface DoubleEndedQueueTest{
 
     DoubleEndedQueue<Integer> getQueue();
