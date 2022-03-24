@@ -8,7 +8,10 @@ import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Comparator;
+import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
@@ -182,7 +185,30 @@ interface DoubleEndedQueueTest{
         assertEquals(initialSize, getQueue().size());
     }
 
+    @ParameterizedTest
+    @MethodSource("sortSize")
+    @DisplayName("sort doesn't change size")
+    default void sortDoesntChangeSize(int[] list){
+        addAll(list);
+        assertEquals(list.length, getQueue().size());
+    }
+
     // Sort
+
+    @Test
+    @DisplayName("sort over empty queue don't throw exception")
+    default void sortOverEmptyDontThrowException(){
+        getQueue().sort(new IntegerComparator());
+    }
+
+    @ParameterizedTest
+    @MethodSource("unorderedList")
+    @DisplayName("frequency of elements are the same after sort")
+    default void sortKeepsElementsFrequency(int[] list){
+        addAll(list);
+        getQueue().sort(new IntegerComparator());
+        assertTrue(isPermutation(list));
+    }
 
     private void sortAndAssertItsRight(int[] list) {
         addAll(list);
@@ -238,6 +264,14 @@ interface DoubleEndedQueueTest{
     }
 
     // Arguments method
+
+    static Stream<Arguments> sortSize(){
+        return Stream.of(
+                Arguments.of(new int[]{}),
+                Arguments.of(new int[]{23}),
+                Arguments.of(new int[]{2, 1, 1, 2})
+        );
+    }
 
     static Stream<Arguments> unorderedSet(){
         return Stream.of(
@@ -312,4 +346,37 @@ interface DoubleEndedQueueTest{
     default int compareConsecutive(Comparator<Integer> comparator, int pos){
         return comparator.compare(getItemAt(pos), getItemAt(pos + 1));
     }
+
+    default boolean isPermutation(int[] originalList){
+        Boolean[] checklist = new Boolean[originalList.length];
+
+        Arrays.fill(checklist, Boolean.FALSE);
+
+        for (int queueIndex = 0; queueIndex < getQueue().size(); queueIndex++){
+            int originalAndCheckIndex = 0;
+            boolean found = false;
+            while (originalAndCheckIndex < originalList.length && !found) {
+                if(!checklist[originalAndCheckIndex]){
+                    found = getItemAt(queueIndex).equals(originalList[originalAndCheckIndex]);
+                    checklist[originalAndCheckIndex] = found;
+                }
+                originalAndCheckIndex++;
+            }
+        }
+
+        return allTrue(checklist);
+    }
+
+    default boolean allTrue(Boolean[] list){
+        boolean allTrue = true;
+        int index = 0;
+
+        while (allTrue && index < list.length){
+            allTrue = list[index];
+            index++;
+        }
+
+        return allTrue;
+    }
+
 }

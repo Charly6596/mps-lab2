@@ -204,6 +204,11 @@ public class DequeNode<T> {
   - deleteLast over empty queue throws Exception.
   - deleteFirst deletes left most node.
   - deleteLast deletes right most node.
+  - Throws exception when node not in queue
+  - Throws exception when node is null
+  - Throws exception when queue is empty
+  - Size decreases when we delete 1 item
+  - find = null when node is deleted
 - Peek. 
   - peekFirst when empty throws Exception.
   - peekLast when empty throws Exception.
@@ -216,6 +221,7 @@ public class DequeNode<T> {
   - deleteLast decrease size by one.
   - peekFirst doesn't change size.
   - peekLast doesn't change size.
+  - sort doesn't change size.
 - GetAt
   - on empty list throws exception
   - on non-existing index throws exception
@@ -226,12 +232,15 @@ public class DequeNode<T> {
   - Returns null when item not found
   - Returns null when list is empty
   - Returns element when found
-- Delete
-  - Throws exception when node not in queue
-  - Throws exception when node is null
-  - Throws exception when queue is empty
-  - Size decreases when we delete 1 item
-  - find = null when node is deleted
+- Sort 
+  - sort over empty queue don't throw exception
+  - frequency of elements are the same after sort
+  - sort sorts correctly unordered list without repetition
+  - sort sorts correctly unordered list with repetition
+  - sort sorts correctly a list in reverse order without repetition
+  - sort sorts correctly a list in reverse order with repetition
+  - Doesnt change the order of a list already ordered without repetition
+  - Doesnt change the order of a list already ordered with repetition
 
 ### Queue Node 
 - Construction:
