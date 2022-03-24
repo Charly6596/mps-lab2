@@ -191,8 +191,8 @@ public class DequeNode<T> {
   - deleteFirst deletes left most node.
   - deleteLast deletes right most node.
 - Peek. 
-  - peekFirst when null throws Exception.
-  - peekLast when null throws Exception.
+  - peekFirst when empty throws Exception.
+  - peekLast when empty throws Exception.
   - peekFirst peeks left most node.
   - peekLast peeks right most node.
 - Size 
@@ -202,7 +202,12 @@ public class DequeNode<T> {
   - deleteLast decrease size by one.
   - peekFirst doesn't change size.
   - peekLast doesn't change size.
-
+- GetAt
+  - on empty list throws exception
+  - on non-existing index throws exception
+  - on existing index returns the correct element
+  - Get last index = peekLast
+  - Get first index = peekFirst
 ### Queue Node 
 
 - Construction.

@@ -12,7 +12,6 @@ interface DoubleEndedQueueTest{
     DoubleEndedQueue<Integer> getQueue();
 
     // Append Test
-
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2})
     @DisplayName("append null then peekLast null")
@@ -36,7 +35,7 @@ interface DoubleEndedQueueTest{
     @DisplayName("append item then peekLast return this item")
     default void appendTest(int initialSize){
         this.append(initialSize);
-        Integer node = Integer.valueOf(100);
+        Integer node = 100;
         getQueue().append(node);
         assertSame(node, getQueue().peekLast());
     }
@@ -46,7 +45,7 @@ interface DoubleEndedQueueTest{
     @DisplayName("appendLeft item then peekFirst return this item")
     default void appendLeftTest(int initialSize){
         this.append(initialSize);
-        Integer node = Integer.valueOf(100);
+        Integer node = 100;
         getQueue().appendLeft(node);
         assertSame(node, getQueue().peekFirst());
     }
@@ -70,7 +69,7 @@ interface DoubleEndedQueueTest{
     @DisplayName("deleteFirst deletes left most node")
     default void deleteFirstDeleteLeftMostNode(int initialSize){
         this.append(initialSize);
-        Integer node = Integer.valueOf(100);
+        Integer node = 100;
         getQueue().appendLeft(node);
         getQueue().deleteFirst();
         assertNotSame(node, getQueue().peekFirst());
@@ -81,7 +80,7 @@ interface DoubleEndedQueueTest{
     @DisplayName("deleteLast deletes right most node")
     default void deleteLastDeleteLeftMostNode(int initialSize){
         this.append(initialSize);
-        Integer node = Integer.valueOf(100);
+        Integer node = 100;
         getQueue().append(node);
         getQueue().deleteLast();
         assertNotSame(node, getQueue().peekLast());
@@ -90,13 +89,13 @@ interface DoubleEndedQueueTest{
     // Peek test
 
     @Test
-    @DisplayName("peekFirst when null throws Exception")
+    @DisplayName("peekFirst when empty throws Exception")
     default void peekFirstWhenEmptyThrowsException(){
         assertThrows(RuntimeException.class, () -> getQueue().peekFirst());
     }
 
     @Test
-    @DisplayName("peekLast when null throws Exception")
+    @DisplayName("peekLast when empty throws Exception")
     default void peekLastWhenEmptyThrowsException(){
         assertThrows(RuntimeException.class, () -> getQueue().peekLast());
     }
@@ -104,21 +103,21 @@ interface DoubleEndedQueueTest{
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2})
     @DisplayName("peekFirst peeks left most node")
-    default void peekFirstPeeksLeftMostNode(int initialSize){
+    default void peekFirstPeeksLeftMostItem(int initialSize){
         this.append(initialSize);
-        Integer node = Integer.valueOf(100);
-        getQueue().appendLeft(node);
-        assertSame(node, getQueue().peekFirst());
+        Integer item = 100;
+        getQueue().appendLeft(item);
+        assertSame(item, getQueue().peekFirst());
     }
 
     @ParameterizedTest
     @ValueSource(ints = {0, 1, 2})
-    @DisplayName("peekLast peeks right most node")
-    default void peekLastPeeksLeftMostNode(int initialSize){
+    @DisplayName("peekLast peeks right most item")
+    default void peekLastPeeksLeftMostItem(int initialSize){
         this.append(initialSize);
-        Integer node = Integer.valueOf(100);
-        getQueue().append(node);
-        assertSame(node, getQueue().peekLast());
+        Integer value = 100;
+        getQueue().append(value);
+        assertSame(value, getQueue().peekLast());
     }
 
     // Size test

@@ -88,7 +88,21 @@ public class DoubleLinkedList<T> implements DoubleEndedQueue<T> {
 
     @Override
     public DequeNode<T> getAt(int position) {
-        return null;
+        if(position >= size() || position < 0) {
+            throw new IndexOutOfBoundsException();
+        }
+
+        int i = 0;
+        var last = first;
+        var current = last.getNext();
+
+        while(i < position && current != null) {
+            i++;
+            last = current;
+            current = current.getNext();
+        }
+
+        return last;
     }
 
     @Override
