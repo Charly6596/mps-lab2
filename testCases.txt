@@ -1,35 +1,75 @@
-Teniendo en cuenta que vamos a cambiar el tipo de next y previous a DequeNode:
+Double Ended Queue
+ - Test Interface strategy
+ 
+Since we have been given an interface to test, we have created a test class that is also an interface. This way the test is extensible to any class that implements the interface.
 
-@BeforeEach setUp -> inicializa un objeto tipo DequeNode antes de los tests usando el constructor
-@AfterEach tearDown -> iguala el objeto a null después de todos los tests
+To use this strategy we have relied on the following StackOverflow thread:
 
-@ParameterizedTest
-probar si getItem devuelve el valor correcto -> assertEquals(argument,node.getItem)
-	Se le pasa como argumento al método un argumento argument de cualquier tipo
-	para compararlo con node.getItem. En el caso de que sean equivalentes, se pasa el test.
+How to test different implementations for an interface in Junit5 without duplicating the code:
+https://stackoverflow.com/questions/55437810/how-to-test-different-implementations-for-an-interface-in-junit5-without-duplica
 
-@ParameterizedTest
-probar si getNext devuelve el valor correcto -> assertEquals(aux, node.getNext)
-	Se le pasan tres argumentos(arg1, arg2, arg3), haciendo de next, previous e item para 
-	crear como variable local del método un nodo aux y compararlo con node.getNext.
-	En el caso de que sean equivalentes, se pasa el test.
-
-@ParameterizedTest
-probar si getPrevious devuelve el valor correcto -> assertEquals(aux, node.getPrevious)
-	Se le pasan tres argumentos(arg1, arg2, arg3), haciendo de next, previous e item para 
-	crear como variable local del método un nodo aux y compararlo con node.getPrevious.
-	En el caso de que sean equivalentes, se pasa el test.
-
-@ParameterizedTest
-probar si isFirstNode es true siendo previous=null -> assertNull(previous)
-	En este se comprueba que si el nodo actual no tiene previo, el método isFirstNode devuelva true.
-
-@ParameterizedTest
-probar si isLastNode es true siendo next=null -> assertNull(next)
-	En este se comprueba que si el nodo actual no tiene siguiente, el método isLastNode devuelva true.
-
-@ParameterizedTest
-probar isNotATerminalNode es true siendo !isFirstNode() && !isLastNode() ->assertNotNull(previous) y assertNotNull(next)
-
-probar que el previous del 1er nodo sea null
-probar que el next del ultimo sea null
+ - Test Cases
+	Double Ended Queue
+	 - Append.
+		append null then peekLast null.
+		appendLeft null then peekFirst null.
+		append item then peekLast return this item.
+		appendLeft item then peekFirst return this item.
+	 - Delete.
+		deleteFirst over empty queue throws Exception.
+		deleteLast over empty queue throws Exception.
+		deleteFirst deletes left most node.
+		deleteLast deletes right most node.
+		Throws exception when node not in queue
+		Throws exception when node is null
+		Throws exception when queue is empty
+		Size decreases when we delete 1 item
+		find = null when node is deleted
+	 - Peek.
+		peekFirst when empty throws Exception.
+		peekLast when empty throws Exception.
+		peekFirst peeks left most node.
+		peekLast peeks right most node.
+	 - Size
+		append increase size by one.
+		appendLeft increase size by one.
+		deleteFirst decrease size by one.
+		deleteLast decrease size by one.
+		peekFirst doesn't change size.
+		peekLast doesn't change size.
+		sort doesn't change size.
+	 - GetAt
+		on empty list throws exception
+		on non-existing index throws exception
+		on existing index returns the correct element
+		Get last index = peekLast
+		Get first index = peekFirst
+	 - Find
+		Returns null when item not found
+		Returns null when list is empty
+		Returns element when found
+	 - Sort
+		sort over empty queue don't throw exception
+		frequency of elements are the same after sort
+		sort sorts correctly unordered list without repetition
+		sort sorts correctly unordered list with repetition
+		sort sorts correctly a list in reverse order without repetition
+		sort sorts correctly a list in reverse order with repetition
+		Doesnt change the order of a list already ordered without repetition
+		Doesnt change the order of a list already ordered with repetition
+		
+	Queue Node
+	 - Construction:
+		GetItemCorrect() -> Compare if getItem() returns the item of a node.
+		GetNextCorrect() -> Compare if getNext() returns the item of a node.
+		GetPreviousCorrect() -> Compare if getPrevious() returns the item of a node.
+		SetItemCorrect() -> Compare if setItem() sets the item of a node.
+		SetNextCorrect() -> Compare if setNext() sets the next node of a node.
+		SetPreviousCorrect() -> Compare if setNext() sets the previous node of a node.
+	 - isFirstNodePreviousNull() -> Checks if isFirstNode() is true, then the previous node is null.
+	 - isFirstNodePreviousNull() -> Checks if isLastNode() is true, then the next node is null.
+	 - Get if a node is a terminal node:
+	 - isNotATerminalNodeCorrect() -> Checks if isNotATerminalNode() is true, then:
+		Is terminal node if next is null.
+		Is terminal node if previous is null.
+		Is terminal node if both next and prev are null.
