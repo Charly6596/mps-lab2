@@ -4,13 +4,25 @@ import auxiliaryClasses.IntegerComparator;
 import org.junit.jupiter.api.DisplayName;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.Arguments;
 import org.junit.jupiter.params.provider.MethodSource;
 import org.junit.jupiter.params.provider.ValueSource;
 
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Stream;
 
 import static org.junit.jupiter.api.Assertions.*;
+
+/**
+ * Since we have been given an interface to test, we have created a test class that is also an interface. This way the test is extensible to any class that implements the interface.
+ *
+ * To use this strategy we have relied on the following StackOverflow thread:
+ *
+ * [How to test different implementations for an interface in Junit5 without duplicating the code](https://stackoverflow.com/questions/55437810/how-to-test-different-implementations-for-an-interface-in-junit5-without-duplica)
+ */
 
 interface DoubleEndedQueueTest{
 
@@ -181,21 +193,144 @@ interface DoubleEndedQueueTest{
         assertEquals(initialSize, getQueue().size());
     }
 
-    // Sort
     @ParameterizedTest
-    @MethodSource("ArraysOfItems")
-    @DisplayName("sort sorts correctly")
-    default void sortsCorrectly(List<Integer> list){
-        for(Integer item : list){
-            getQueue().append(item);
-        }
+    @MethodSource("sortSize")
+    @DisplayName("sort doesn't change size")
+    default void sortDoesntChangeSize(int[] list){
+        addAll(list);
+        assertEquals(list.length, getQueue().size());
+    }
+
+    // Sort
+
+    @Test
+    @DisplayName("sort over empty queue don't throw exception")
+    default void sortOverEmptyDontThrowException(){
+        getQueue().sort(new IntegerComparator());
+    }
+
+    @ParameterizedTest
+    @MethodSource("unorderedList")
+    @DisplayName("frequency of elements are the same after sort")
+    default void sortKeepsElementsFrequency(int[] list){
+        addAll(list);
+        getQueue().sort(new IntegerComparator());
+        assertTrue(isPermutation(list));
+    }
+
+    private void sortAndAssertItsRight(int[] list) {
+        addAll(list);
 
         IntegerComparator comparator = new IntegerComparator();
-        getQueue().sort(new IntegerComparator());
+        getQueue().sort(comparator);
 
-        for(int i = 0; i < list.size() - 1; i++){
-            assertTrue(comparator.compare(getQueue().getAt(i).getItem(), getQueue().getAt(i+1).getItem()) < 0);
+        for(int i = 0; i < list.length - 1; i++){
+            assertTrue(compareConsecutive(comparator, i) <= 0);
         }
+    }
+
+    @ParameterizedTest
+    @MethodSource("unorderedSet")
+    @DisplayName("sort sorts correctly unordered list without repetition")
+    default void sortsCorrectlyUnorderedSet(int[] list){
+        sortAndAssertItsRight(list);
+    }
+    
+    @ParameterizedTest
+    @MethodSource("unorderedList")
+    @DisplayName("sort sorts correctly unordered list with repetition")
+    default void sortsCorrectlyUnorderedList(int[] list){
+        sortAndAssertItsRight(list);
+    }
+
+    @ParameterizedTest
+    @MethodSource("reverseOrderSet")
+    @DisplayName("sort sorts correctly a list in reverse order without repetition")
+    default void sortsCorrectlyReverseOrderSet(int[] list){
+        sortAndAssertItsRight(list);
+    }
+
+    @ParameterizedTest
+    @MethodSource("reverseOrderList")
+    @DisplayName("sort sorts correctly a list in reverse order with repetition")
+    default void sortsCorrectlyReverseOrderList(int[] list){
+        sortAndAssertItsRight(list);
+    }
+
+    @ParameterizedTest
+    @MethodSource("orderedSet")
+    @DisplayName("Doesnt change the order of a list already ordered without repetition")
+    default void dontChangeTheOrderOfOrderedSet(int[] list){
+        sortAndAssertItsRight(list);
+    }
+
+    @ParameterizedTest
+    @MethodSource("orderedList")
+    @DisplayName("Doesnt change the order of a list already ordered with repetition")
+    default void dontChangeTheOrderOfOrderedList(int[] list){
+        sortAndAssertItsRight(list);
+    }
+
+    // Arguments method
+
+    static Stream<Arguments> sortSize(){
+        return Stream.of(
+                Arguments.of(new int[]{}),
+                Arguments.of(new int[]{23}),
+                Arguments.of(new int[]{2, 1, 1, 2})
+        );
+    }
+
+    static Stream<Arguments> unorderedSet(){
+        return Stream.of(
+                Arguments.of(new int[]{2, 1}),
+                Arguments.of(new int[]{2, 1, 3}),
+                Arguments.of(new int[]{2, 1, 3, 5, 4}),
+                Arguments.of(new int[]{100, 1, 98, 56, 9}),
+                Arguments.of(new int[]{5, 7, 2, 9, 3, 4, 8})
+        );
+    }
+
+    static Stream<Arguments> unorderedList(){
+        return Stream.of(
+                Arguments.of(new int[]{2, 1, 1, 2}),
+                Arguments.of(new int[]{2, 1, 3, 2, 3}),
+                Arguments.of(new int[]{2, 1, 3, 5, 4, 3, 3, 3}),
+                Arguments.of(new int[]{100, 1, 98, 56, 9, 98, 9}),
+                Arguments.of(new int[]{5, 7, 2, 9, 3, 4, 8, 2, 2, 2})
+        );
+    }
+
+    static Stream<Arguments> reverseOrderSet(){
+        return Stream.of(
+                Arguments.of(new int[]{2, 1}),
+                Arguments.of(new int[]{3, 2, 1}),
+                Arguments.of(new int[]{545, 21, 4})
+        );
+    }
+
+    static Stream<Arguments> reverseOrderList(){
+        return Stream.of(
+                Arguments.of(new int[]{2, 2, 1}),
+                Arguments.of(new int[]{3, 3, 2, 2, 1, 1, 1, 1}),
+                Arguments.of(new int[]{545, 21, 21, 21, 21, 4, 4, 4})
+        );
+    }
+
+    static Stream<Arguments> orderedSet(){
+        return Stream.of(
+                Arguments.of(new int[]{1, 2}),
+                Arguments.of(new int[]{1, 2, 3}),
+                Arguments.of(new int[]{3, 100, 2349})
+        );
+    }
+
+    static Stream<Arguments> orderedList(){
+        return Stream.of(
+                Arguments.of(new int[]{1, 2, 2, 2}),
+                Arguments.of(new int[]{1, 1, 1, 2, 3, 3}),
+                Arguments.of(new int[]{3, 3, 100, 100, 2349})
+        );
     }
 
     // Auxiliary methods
@@ -205,4 +340,51 @@ interface DoubleEndedQueueTest{
             getQueue().append(i);
         }
     }
+
+    private void addAll(int[] list) {
+        for(Integer item : list){
+            getQueue().append(item);
+        }
+    }
+
+    default Integer getItemAt(int pos){
+        return getQueue().getAt(pos).getItem();
+    }
+
+    default int compareConsecutive(Comparator<Integer> comparator, int pos){
+        return comparator.compare(getItemAt(pos), getItemAt(pos + 1));
+    }
+
+    default boolean isPermutation(int[] originalList){
+        Boolean[] checklist = new Boolean[originalList.length];
+
+        Arrays.fill(checklist, Boolean.FALSE);
+
+        for (int queueIndex = 0; queueIndex < getQueue().size(); queueIndex++){
+            int originalAndCheckIndex = 0;
+            boolean found = false;
+            while (originalAndCheckIndex < originalList.length && !found) {
+                if(!checklist[originalAndCheckIndex]){
+                    found = getItemAt(queueIndex).equals(originalList[originalAndCheckIndex]);
+                    checklist[originalAndCheckIndex] = found;
+                }
+                originalAndCheckIndex++;
+            }
+        }
+
+        return allTrue(checklist);
+    }
+
+    default boolean allTrue(Boolean[] list){
+        boolean allTrue = true;
+        int index = 0;
+
+        while (allTrue && index < list.length){
+            allTrue = list[index];
+            index++;
+        }
+
+        return allTrue;
+    }
+
 }
